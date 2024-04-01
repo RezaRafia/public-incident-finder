@@ -22,7 +22,6 @@ stop_event = threading.Event()
 
 def data_gathering(url, stream_id, chunk_per_second):
     while not stop_event.is_set():
-        logging.info(f"data_gathering stop_event {stop_event}")
         response = requests.get(url, stream=True)
         for chunk in response.iter_content(chunk_size=chunk_per_second * 60):
             formatted_date = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -33,13 +32,12 @@ def data_gathering(url, stream_id, chunk_per_second):
             logging.info(f"Saved audio chunk at {file_path}")
 
 
-def transcription(model_name):
-    model = whisper.load_model(model_name)
+def transcription():
+    model = whisper.load_model("small.en")
     options = whisper.DecodingOptions().__dict__.copy()
     options['no_speech_threshold'] = 0.3
 
     while not stop_event.is_set():
-        logging.info(f"transcription stop_event {stop_event}")
         for file in os.listdir(RAW_AUDIO_PATH):
             audio_path = os.path.join(RAW_AUDIO_PATH, file)
             output_path = os.path.join(TRANSCRIBED_PATH, f"{file}.txt")
@@ -60,7 +58,6 @@ def threat_detection():
         threats_keywords = json.load(f)
         
     while not stop_event.is_set():
-        logging.info(f"threat_detection stop_event {stop_event}")
         for file in os.listdir(TRANSCRIBED_PATH):
             transcribed_path = os.path.join(TRANSCRIBED_PATH, file)
             threats_file_path = os.path.join(THREATS_PATH, f"{file}.txt")
@@ -83,8 +80,14 @@ def threat_detection():
         time.sleep(10)
 
 
+def setup_folders():
+    for folder in [RAW_AUDIO_PATH, TRANSCRIBED_PATH, THREATS_PATH]:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
 if __name__ == "__main__":
     try:
+        setup_folders()
         data_gathering_thread = threading.Thread(
             target=data_gathering,
             args=(
@@ -93,7 +96,7 @@ if __name__ == "__main__":
                 CHUNK_PER_SECOND,
             ),
         )
-        transcription_thread = threading.Thread(target=transcription, args=("medium.en"))
+        transcription_thread = threading.Thread(target=transcription, args=())
         threat_detection_thread = threading.Thread(target=threat_detection, args=())
 
         data_gathering_thread.start()
