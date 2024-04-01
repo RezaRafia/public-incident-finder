@@ -1,0 +1,4 @@
+venv
+files/raw_audio/*
+files/threats/*
+files/transcribed/*

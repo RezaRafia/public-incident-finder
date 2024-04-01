@@ -1,0 +1,44 @@
+[
+    {
+        "category": "bomb",
+        "keywords": [
+            "bomb",
+            "explosion",
+            "detonate",
+            "blast",
+            "explode",
+            "grenade",
+            "explosive",
+            "IED"
+        ]
+    },
+    {
+        "category": "gun",
+        "keywords": ["gun", "shoot", "firearm", "rifle", "pistol", "weapon", "weapons", "bullet"]
+    },
+    {
+        "category": "hostage",
+        "keywords": ["hostage", "kidnap", "abduct", "capture", "ransom", "prisoner"]
+    },
+    {
+        "category": "crisis",
+        "keywords": ["crisis", "emergency", "accident", "disaster", "catastrophe"]
+    },
+    {
+        "category": "medical",
+        "keywords": ["medical", "doctor", "hospital", "injury", "injuries", "sick", "illness"]
+    },
+    {
+        "category": "violence",
+        "keywords": [
+            "violence",
+            "violent",
+            "fight",
+            "attack",
+            "assault",
+            "war",
+            "battle",
+            "combat"
+        ]
+    }
+]
